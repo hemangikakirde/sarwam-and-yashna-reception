@@ -27,7 +27,7 @@ function whenVisible(el, fn, rootMargin = "120px") {
   observer.observe(el);
 }
 
-const weddingDate = new Date("2026-11-15T12:05:00+05:30").getTime();
+const receptionDate = new Date("2026-11-15T18:30:00+05:30").getTime();
 const COUNTDOWN_ALMOST_THERE_DAYS = 21;
 const COUNTDOWN_THIS_WEEK_DAYS = 7;
 
@@ -40,7 +40,7 @@ function updateCountdown() {
   if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
 
   const now = Date.now();
-  let distance = weddingDate - now;
+  let distance = receptionDate - now;
   if (distance < 0) distance = 0;
 
   const d = Math.floor(distance / 86400000);
@@ -54,7 +54,7 @@ function updateCountdown() {
   secondsEl.textContent = String(s).padStart(2, "0");
 
   if (labelEl) {
-    let labelHtml = 'Until we say <em>forever</em>';
+    let labelHtml = 'Until the <em>reception</em>';
     if (distance === 0) labelHtml = "And so it begins.";
     else if (d <= COUNTDOWN_THIS_WEEK_DAYS) labelHtml = "This week.";
     else if (d <= COUNTDOWN_ALMOST_THERE_DAYS) labelHtml = "Almost there";
@@ -122,7 +122,7 @@ if (rsvpForm) rsvpForm.addEventListener("submit", async function (event) {
         attendance,
         message,
         submitted: new Date().toISOString(),
-        _subject: "Wedding RSVP - Sarwam & Yashna",
+        _subject: "Reception RSVP - Sarwam & Yashna",
         _template: "table",
         _captcha: "false"
       })
@@ -160,32 +160,6 @@ if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     el.classList.add("is-visible");
   });
 }
-
-(function () {
-  const dayNav = document.querySelector(".event-day-nav");
-  if (!dayNav) return;
-
-  const buttons = dayNav.querySelectorAll(".event-day-btn");
-  const groups = document.querySelectorAll(".event-group");
-
-  function showDay(day) {
-    buttons.forEach((btn) => {
-      const active = btn.dataset.day === day;
-      btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-pressed", active ? "true" : "false");
-    });
-    groups.forEach((group) => {
-      group.classList.toggle("is-active", group.dataset.day === day);
-    });
-  }
-
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => showDay(btn.dataset.day));
-  });
-
-  const initial = dayNav.querySelector(".event-day-btn.is-active");
-  showDay(initial ? initial.dataset.day : "15");
-})();
 
 (function () {
   const openBtn = document.getElementById("mapLightboxOpen");
@@ -605,12 +579,12 @@ if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     requestAnimationFrame(() => calendarActions.classList.add("is-visible"));
   }
 
-  function downloadWeddingIcs() {
+  function downloadReceptionIcs() {
     const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
     const ics = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//Sarwam & Yashna//Wedding//EN",
+      "PRODID:-//Sarwam & Yashna//Reception//EN",
       "CALSCALE:GREGORIAN",
       "METHOD:PUBLISH",
       "BEGIN:VTIMEZONE",
@@ -624,12 +598,12 @@ if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       "END:STANDARD",
       "END:VTIMEZONE",
       "BEGIN:VEVENT",
-      "UID:sarwam-yashna-wedding-20261115@invitation",
+      "UID:sarwam-yashna-reception-20261115@invitation",
       `DTSTAMP:${stamp}`,
-      "DTSTART;TZID=Asia/Kolkata:20261115T120500",
-      "DTEND;TZID=Asia/Kolkata:20261115T130500",
-      "SUMMARY:Sarwam & Yashna - Wedding Muhurta",
-      "DESCRIPTION:Wedding muhurta at 12:05 PM. Morning rituals from 8 AM. Reception at 6:30 PM at Samarambh Lawns\\, Thane.",
+      "DTSTART;TZID=Asia/Kolkata:20261115T183000",
+      "DTEND;TZID=Asia/Kolkata:20261115T230000",
+      "SUMMARY:Sarwam & Yashna - Reception",
+      "DESCRIPTION:Reception from 6:30 PM at Samarambh Lawns\\, Thane.",
       "LOCATION:Samarambh Lawns\\, Thane\\, Maharashtra",
       "END:VEVENT",
       "END:VCALENDAR"
@@ -639,7 +613,7 @@ if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "sarwam-yashna-wedding.ics";
+    link.download = "sarwam-yashna-reception.ics";
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -905,7 +879,7 @@ if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     if (isDown) blockTouchScroll(e);
   }, { passive: false });
 
-  if (addToCalendarBtn) addToCalendarBtn.addEventListener("click", downloadWeddingIcs);
+  if (addToCalendarBtn) addToCalendarBtn.addEventListener("click", downloadReceptionIcs);
 
   function bootScratchCanvas() {
     sizeCanvas();
